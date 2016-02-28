@@ -2,6 +2,7 @@ from urllib.parse import urlparse
 import time
 import random
 from pathlib import Path
+import zipfile
 import requests
 from selenium import webdriver
 
@@ -47,7 +48,12 @@ class Scraper:
             self.sleep()
 
     def archive(self):
-        pass
+        output_path = Path('.') / ('%s.zip' % self.name)
+        with zipfile.ZipFile(str(output_path), 'w') as zf:
+            for file_ in self.output_dir.glob('*.jpg'):
+                print(file_)
+                zf.write(str(file_))
+                # zf.writestr(file_.name, file_.read_bytes())
 
     def sleep(self):
         time.sleep(random.randint(1, 5))
